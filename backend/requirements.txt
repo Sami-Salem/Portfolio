@@ -1,29 +1,5 @@
-# FastAPI Backend Requirements
-
-# Core Framework
-fastapi==0.109.0
-uvicorn[standard]==0.27.0
-pydantic==2.5.3
-pydantic-settings==2.1.0
-
-# HTTP Requests
-requests==2.31.0
-httpx==0.26.0
-
-# HTML Parsing
-beautifulsoup4==4.12.3
-lxml==5.1.0
-html5lib==1.1
-
-# CORS Support
-python-multipart==0.0.6
-
-# Additional utilities
-python-dotenv==1.0.0
-Updated upstream
-typing-extensions==4.9.0
-=======
-typing-extensions==4.9.0
-Stashed changes
-pandas==2.2.0
-numpy==1.26.4
+fastapi
+uvicorn
+beautifulsoup4
+requests
+pandas
