@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* You can also add a global background here to match your theme */
+body {
+  @apply bg-navy-950 text-slate-100;
+}
