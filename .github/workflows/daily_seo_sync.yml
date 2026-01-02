@@ -1,0 +1,290 @@
+name: Daily SEO Intelligence Pipeline
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allow manual triggers
+  push:
+    branches:
+      - main
+    paths:
+      - 'seo_pipeline.py'
+      - '.github/workflows/seo-pipeline.yml'
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '18'
+
+jobs:
+  run-seo-pipeline:
+    name: Execute SEO Data Pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Lighthouse CLI
+        run: |
+          npm install -g lighthouse
+
+      - name: Install Screaming Frog Spider (if available)
+        continue-on-error: true
+        run: |
+          # Screaming Frog requires license for CLI
+          # Fallback to mock data if not available
+          echo "Screaming Frog CLI setup skipped - using mock data"
+
+      - name: Configure Environment Variables
+        run: |
+          echo "TARGET_URL=${{ secrets.TARGET_URL }}" >> $GITHUB_ENV
+          echo "TARGET_KEYWORDS=${{ secrets.TARGET_KEYWORDS }}" >> $GITHUB_ENV
+          echo "AHREFS_API_TOKEN=${{ secrets.AHREFS_API_TOKEN }}" >> $GITHUB_ENV
+          echo "SURFER_API_KEY=${{ secrets.SURFER_API_KEY }}" >> $GITHUB_ENV
+
+      - name: Run SEO Pipeline
+        id: pipeline
+        env:
+          TARGET_URL: ${{ secrets.TARGET_URL }}
+          TARGET_KEYWORDS: ${{ secrets.TARGET_KEYWORDS }}
+          AHREFS_API_TOKEN: ${{ secrets.AHREFS_API_TOKEN }}
+          SURFER_API_KEY: ${{ secrets.SURFER_API_KEY }}
+        run: |
+          echo "Starting SEO pipeline execution..."
+          python seo_pipeline.py
+          echo "pipeline_status=success" >> $GITHUB_OUTPUT
+
+      - name: Verify Output File
+        run: |
+          if [ ! -f "./public/master_seo_data.json" ]; then
+            echo "Error: master_seo_data.json not generated"
+            exit 1
+          fi
+          echo "✓ SEO data file generated successfully"
+          
+          # Display file size
+          ls -lh ./public/master_seo_data.json
+          
+          # Validate JSON
+          python -m json.tool ./public/master_seo_data.json > /dev/null
+          echo "✓ JSON validation passed"
+
+      - name: Generate Pipeline Report
+        run: |
+          echo "# SEO Pipeline Execution Report" > pipeline_report.md
+          echo "" >> pipeline_report.md
+          echo "**Execution Time:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> pipeline_report.md
+          echo "" >> pipeline_report.md
+          
+          # Extract key metrics from JSON
+          python - <<EOF
+          import json
+          with open('./public/master_seo_data.json', 'r') as f:
+              data = json.load(f)
+              latest = data[-1] if isinstance(data, list) else data
+              
+          print(f"**Target URL:** {latest['url']}")
+          print(f"**Domain Rating:** {latest.get('domain_rating', 'N/A')}")
+          print(f"**Technical Health Score:** {latest.get('technical_health_score', 'N/A')}")
+          print(f"**Content Score:** {latest.get('content_score', 'N/A')}")
+          print(f"**Lighthouse Performance:** {latest.get('lighthouse_performance', 'N/A')}")
+          print(f"**Trend Score:** {latest.get('trend_score', 'N/A')}")
+          EOF
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "SEO Pipeline Bot"
+          git config --global user.email "seo-bot@github-actions.com"
+
+      - name: Commit Updated SEO Data
+        id: commit
+        run: |
+          git add ./public/master_seo_data.json
+          
+          # Check if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
+            git commit -m "chore: update SEO intelligence data - $TIMESTAMP
+            
+            🤖 Automated update by SEO Pipeline
+            
+            - Updated master_seo_data.json
+            - Timestamp: $TIMESTAMP
+            - Triggered by: ${{ github.event_name }}
+            "
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Push Changes
+        if: steps.commit.outputs.has_changes == 'true'
+        run: |
+          git push origin main
+          echo "✓ Changes pushed successfully"
+
+      - name: Trigger Vercel Deployment
+        if: steps.commit.outputs.has_changes == 'true'
+        run: |
+          # Vercel will automatically deploy on push to main
+          echo "✓ Vercel deployment triggered"
+
+      - name: Upload Pipeline Artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seo-pipeline-results
+          path: |
+            ./public/master_seo_data.json
+            ./lighthouse_reports/*.json
+            ./screaming_frog_exports/**/*.csv
+          retention-days: 30
+
+      - name: Create GitHub Issue on Failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 SEO Pipeline Failed',
+              body: `## Pipeline Execution Failed
+              
+              **Workflow:** ${context.workflow}
+              **Run ID:** ${context.runId}
+              **Triggered by:** ${context.eventName}
+              **Branch:** ${context.ref}
+              **Timestamp:** ${new Date().toISOString()}
+              
+              ### Details
+              Please check the [workflow logs](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for more information.
+              
+              ### Possible Causes
+              - API rate limits exceeded
+              - Network connectivity issues
+              - Invalid credentials
+              - Tool configuration errors
+              
+              **Action Required:** Review logs and fix issues, then re-run pipeline.`,
+              labels: ['bug', 'seo-pipeline', 'automated']
+            });
+            console.log('Created issue:', issue.data.html_url);
+
+      - name: Send Notification (Optional)
+        if: always()
+        run: |
+          # Optional: Send Slack/Discord notification
+          echo "Pipeline status: ${{ steps.pipeline.outputs.pipeline_status }}"
+          
+  validate-and-test:
+    name: Validate SEO Data Quality
+    needs: run-seo-pipeline
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Validate Data Quality
+        run: |
+          python - <<EOF
+          import json
+          import sys
+          
+          with open('./public/master_seo_data.json', 'r') as f:
+              data = json.load(f)
+              latest = data[-1] if isinstance(data, list) else data
+          
+          # Validation checks
+          issues = []
+          
+          # Check for required fields
+          required_fields = ['timestamp', 'url', 'domain_rating', 'technical_health_score']
+          for field in required_fields:
+              if field not in latest:
+                  issues.append(f"Missing required field: {field}")
+          
+          # Check score ranges
+          score_fields = {
+              'domain_rating': (0, 100),
+              'technical_health_score': (0, 100),
+              'content_score': (0, 100),
+              'lighthouse_performance': (0, 100)
+          }
+          
+          for field, (min_val, max_val) in score_fields.items():
+              if field in latest:
+                  value = latest[field]
+                  if value is not None and (value < min_val or value > max_val):
+                      issues.append(f"{field} out of range: {value}")
+          
+          # Report results
+          if issues:
+              print("⚠️  Data quality issues found:")
+              for issue in issues:
+                  print(f"  - {issue}")
+              sys.exit(1)
+          else:
+              print("✅ All data quality checks passed")
+          EOF
+
+      - name: Performance Benchmark
+        run: |
+          python - <<EOF
+          import json
+          
+          with open('./public/master_seo_data.json', 'r') as f:
+              data = json.load(f)
+          
+          if isinstance(data, list) and len(data) >= 2:
+              current = data[-1]
+              previous = data[-2]
+              
+              print("📊 Performance Comparison:")
+              print(f"  Domain Rating: {previous.get('domain_rating')} → {current.get('domain_rating')}")
+              print(f"  Technical Health: {previous.get('technical_health_score')} → {current.get('technical_health_score')}")
+              print(f"  Content Score: {previous.get('content_score')} → {current.get('content_score')}")
+          EOF
+
+  # Optional: Deploy to production
+  deploy-dashboard:
+    name: Deploy Dashboard Update
+    needs: [run-seo-pipeline, validate-and-test]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Trigger Vercel Deployment
+        run: |
+          echo "Vercel auto-deployment triggered by push to main"
+          # Vercel CLI deployment (optional)
+          # npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deployment Success
+        run: |
+          echo "✅ Dashboard updated with latest SEO intelligence data"

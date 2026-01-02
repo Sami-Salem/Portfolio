@@ -2,16 +2,27 @@
 Professional Portfolio Backend - SEO Metadata Analyzer
 FastAPI application for extracting and analyzing SEO metadata from URLs
 """
+import uvicorn
+import logging
+import os
+import re
+import requests
+from pathlib import Path
+from typing import Dict, List, Optional
+from urllib.parse import urlparse
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, HttpUrl
-from typing import Dict, List, Optional
-import requests
 from bs4 import BeautifulSoup
-import re
-from urllib.parse import urlparse
-import logging
+from dotenv import load_dotenv
+
+# 1. Load environment variables correctly
+env_path = Path(__file__).resolve().parent.parent / '.env'
+load_dotenv(dotenv_path=env_path)
+
+# 2. Initialize FastAPI
+app = FastAPI()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -361,3 +372,4 @@ async def analyze_url(request: URLRequest):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+    

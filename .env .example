@@ -1,0 +1,43 @@
+# SEO Pipeline Environment Configuration
+# Copy this file to .env and fill in your actual values
+
+# Target Configuration
+TARGET_URL=https://your-website.com
+TARGET_KEYWORDS=seo,content marketing,digital strategy,technical analysis
+
+# Ahrefs API Configuration
+# Get your API token from: https://ahrefs.com/api/pricing
+AHREFS_API_TOKEN=your_ahrefs_token_here
+
+# SurferSEO API Configuration
+# Get your API key from: https://surferseo.com/api-settings
+SURFER_API_KEY=your_surfer_api_key_here
+
+# Screaming Frog Configuration
+# Path to Screaming Frog CLI executable
+# Windows: C:\Program Files\Screaming Frog SEO Spider\screamingfrogseospider.exe
+# Mac: /Applications/Screaming Frog SEO Spider.app/Contents/MacOS/ScreamingFrogSEOSpider
+# Linux: screamingfrogseospider
+SCREAMING_FROG_PATH=screamingfrogseospider
+
+# Pipeline Configuration
+MAX_CRAWL_DEPTH=3
+CRAWL_TIMEOUT=600
+LIGHTHOUSE_TIMEOUT=120
+
+# Output Configuration
+OUTPUT_PATH=./public/master_seo_data.json
+HISTORICAL_DATA_RETENTION_DAYS=30
+
+# Optional: Notification Settings
+SLACK_WEBHOOK_URL=
+DISCORD_WEBHOOK_URL=
+
+# Optional: Advanced Configuration
+ENABLE_CACHING=true
+CACHE_DURATION_HOURS=24
+RATE_LIMIT_REQUESTS_PER_MINUTE=10
+
+# Development Mode
+# Set to 'true' to use mock data when APIs are unavailable
+DEV_MODE=false

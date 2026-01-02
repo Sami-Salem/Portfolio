@@ -1,5 +1,34 @@
-fastapi
-uvicorn
-beautifulsoup4
-requests
-pandas
+# --- Web Framework & Server ---
+fastapi==0.104.1
+uvicorn==0.24.0
+
+# --- Core Data Processing ---
+pandas==2.1.4
+numpy==1.26.3
+scipy==1.11.4
+scikit-learn==1.3.2
+
+# --- Scrape & Extract (Efficacy) ---
+requests==2.31.0
+httpx==0.26.0
+beautifulsoup4==4.12.3
+lxml==5.1.0
+pytrends==4.9.2
+google-api-python-client==2.100.0
+
+# --- Reliability & Security ---
+pydantic==2.5.3
+python-dotenv==1.0.0
+tenacity==8.2.3
+ratelimit==2.2.1
+jsonschema==4.20.0
+
+# --- Utilities ---
+python-dateutil==2.8.2
+colorlog==6.8.2
+csv-diff==1.1
+
+# --- Dev/Testing ---
+pytest==7.4.4
+black==24.1.1
+flake8==7.0.0
