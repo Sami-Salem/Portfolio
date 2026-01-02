@@ -77,7 +77,7 @@ function App() {
             <span className="text-[#557C55]">Digital Intelligence</span> &amp; Human Context.
           </h1>
           <p className="text-lg text-slate-600 mb-8 max-w-2xl leading-relaxed">
-            I am a Data { & } SEO Specialist with a medical background. I build automated SEO pipelines, manage Generative AI integrations, and deliver professional bilingual localization for various sectors.
+            I am a Data &amp; SEO Specialist with a medical background. I build automated SEO pipelines, manage Generative AI integrations, and deliver professional bilingual localization for various sectors.
           </p>
         </div>
       </header>
@@ -96,7 +96,7 @@ function App() {
         </div>
       </section>
 
-      {/* 4. CORE EXPERTISE { & } TECH STACK */}
+      {/* 4. CORE EXPERTISE &amp; TECH STACK */}
       <section className="py-20 px-6 bg-[#F8FAF8] border-y border-[#E2E8F0]">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-sm font-black text-[#557C55] uppercase tracking-[0.2em] mb-12 text-center">Core Expertise</h2>
