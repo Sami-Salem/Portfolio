@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 import LiveIntelligenceDashboard from './Dashboard';
-import { Antenna } from 'lucide-react';
-
-
-export default App;
 import { 
   Github, Linkedin, Mail, ExternalLink, BookOpen, Search, 
   Languages, Brain, Cpu, Database, Award, Sparkles, ChevronLeft, ChevronRight, Antenna
@@ -58,10 +54,10 @@ function App() {
           <span className="text-xl font-bold tracking-tighter text-[#1E293B]">SAMI SALEM<span className="text-[#557C55]">.</span></span>
           <div className="flex items-center space-x-8">
             <a href="https://github.com/Sami-Salem" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-[#1E293B] transition-transform hover:scale-110">
-              <Github size={28} /> {/* Enlarged Icon */}
+              <Github size={28} />
             </a>
             <a href="https://www.linkedin.com/in/sami-salem-98791a3a1" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-[#0077B5] transition-transform hover:scale-110">
-              <Linkedin size={28} /> {/* Enlarged Icon */}
+              <Linkedin size={28} />
             </a>
             <a href="mailto:samisalemj@outlook.com" className="bg-[#557C55] text-white px-6 py-2 rounded-full text-sm font-bold hover:bg-[#3E5C3E] transition shadow-md">
               CONTACT ME
@@ -165,7 +161,7 @@ function App() {
           </div>
           <div className="flex justify-center gap-2 mt-8">
             {certifications.map((_, i) => (
-              <div key={i} className={`w-1.5 h-1.5 rounded-full transition-all ${currentCert === i ? 'bg-[#A3B18A] w-6' : 'bg-white/20'}`} />
+              <div key={i} className={w-1.5 h-1.5 rounded-full transition-all ${currentCert === i ? 'bg-[#A3B18A] w-6' : 'bg-white/20'}} />
             ))}
           </div>
         </div>
@@ -183,7 +179,7 @@ function App() {
 
       <footer className="py-12 bg-[#F8FAF8] border-t border-[#E2E8F0] text-center">
         <p className="text-slate-400 text-sm italic">"Precision in code, clarity in language."</p>
-        <p className="text-slate-300 text-xs mt-4">© 2026 Sami Mohammad Salem Salem. Built with clinical precision.</p>
+        <p className="text-slate-300 text-xs mt-4">©️ 2026 Sami Mohammad Salem Salem. Built with clinical precision.</p>
       </footer>
     </div>
   );
