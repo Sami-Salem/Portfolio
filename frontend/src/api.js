@@ -1,5 +1,6 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-const API_TIMEOUT = import.meta.env.VITE_API_TIMEOUT || 30000;
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_TIMEOUT = Number(process.env.REACT_APP_API_TIMEOUT) || 30000;
+
 
 class APIError extends Error {
   constructor(message, status, data) {
@@ -21,7 +22,7 @@ class APIClient {
     const timeoutId = setTimeout(() => controller.abort(), this.timeout);
 
     try {
-      const response = await fetch(${this.baseURL}${endpoint}, {
+      const response = await fetch(`${this.baseURL}${endpoint}`, {
         ...options,
         headers: {
           'Content-Type': 'application/json',
@@ -108,8 +109,8 @@ function App() {
       <section id="projects" className="p-10 bg-white">
         <h2 className="text-3xl font-bold">Other Projects</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-           <div className="p-4 border rounded">Project 1</div>
-           <div className="p-4 border rounded">Project 2</div>
+          <div className="p-4 border rounded">Project 1</div>
+          <div className="p-4 border rounded">Project 2</div>
         </div>
       </section>
     </div>
