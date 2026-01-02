@@ -74,7 +74,7 @@ function App() {
           </div>
           <h1 className="text-5xl font-bold text-[#1E293B] mb-6 leading-[1.1]">
             Bridging the gap between <br />
-            <span className="text-[#557C55]">Digital Intelligence</span> & Human Context.
+            <span className="text-[#557C55]">Digital Intelligence</span> &amp; Human Context.
           </h1>
           <p className="text-lg text-slate-600 mb-8 max-w-2xl leading-relaxed">
             I am a Data & SEO Specialist with a medical background. I build automated SEO pipelines, manage Generative AI integrations, and deliver professional bilingual localization for various sectors.
