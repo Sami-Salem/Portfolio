@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import LiveIntelligenceDashboard from './Dashboard';
-import { Antenna } from 'lucide-react';
+import { antenna } from 'lucide-react';
 
 function App() {
   return (
