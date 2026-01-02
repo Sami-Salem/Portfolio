@@ -14,7 +14,7 @@ function App() {
 export default App;
 import { 
   Github, Linkedin, Mail, ExternalLink, BookOpen, Search, 
-  Languages, Brain, Cpu, Database, Award, Sparkles, ChevronLeft, ChevronRight 
+  Languages, Brain, Cpu, Database, Award, Sparkles, ChevronLeft, ChevronRight, antenna,
 } from 'lucide-react';
 
 function App() {
