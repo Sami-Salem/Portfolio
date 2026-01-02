@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
 import LiveIntelligenceDashboard from './Dashboard';
+import { Antenna } from 'lucide-react';
+
+function App() {
+  return (
+    <div>
+      <h1>My PORTFOLIO</h1>
+      {/* 2. The Tag goes here, inside the return statement */
+      <Antenna size={48} className="text-green-500" />
+    </div>
+  );
+}
+export default App;
 import { 
   Github, Linkedin, Mail, ExternalLink, BookOpen, Search, 
   Languages, Brain, Cpu, Database, Award, Sparkles, ChevronLeft, ChevronRight 
