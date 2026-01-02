@@ -161,7 +161,7 @@ function App() {
           </div>
           <div className="flex justify-center gap-2 mt-8">
             {certifications.map((_, i) => (
-              <div key={i} className={w-1.5 h-1.5 rounded-full transition-all ${currentCert === i ? 'bg-[#A3B18A] w-6' : 'bg-white/20'}} />
+              <div key={i} className={`w-1.5 h-1.5 rounded-full transition-all ${currentCert === i ? 'bg-[#A3B18A] w-6' : 'bg-white/20'}`} />
             ))}
           </div>
         </div>
