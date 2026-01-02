@@ -69,25 +69,13 @@ const LiveIntelligenceDashboard = () => {
     const data = [];
     for (let i = 0; i < 30; i++) {
       data.push({
-        date: `2024-01-${i+1}`,
+        date: 2024-01-${i+1},
         interest: 50 + Math.random() * 20,
         ranking: 65 + Math.random() * 10
       });
     }
     return data;
   }
-
-  const getScoreColor = (score) => {
-    if (score >= 90) return 'text-emerald-400';
-    if (score >= 70) return 'text-blue-400';
-    return 'text-amber-400';
-  };
-
-  const getScoreBg = (score) => {
-    if (score >= 90) return 'bg-emerald-500/10 border-emerald-500/30';
-    if (score >= 70) return 'bg-blue-500/10 border-blue-500/30';
-    return 'bg-amber-500/10 border-amber-500/30';
-  };
 
   if (isLoading) {
     return (
@@ -104,6 +92,16 @@ const LiveIntelligenceDashboard = () => {
     { metric: 'Accessibility', value: seoData?.lighthouse_accessibility || 0 },
     { metric: 'Content', value: seoData?.content_density || 0 }
   ];
+
+  const getColorClass = (color) => {
+    const colors = {
+      emerald: 'text-emerald-400',
+      blue: 'text-blue-400',
+      purple: 'text-purple-400',
+      amber: 'text-amber-400'
+    };
+    return colors[color] || 'text-slate-400';
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-6 text-slate-200">
@@ -134,7 +132,7 @@ const LiveIntelligenceDashboard = () => {
           ].map((m, i) => (
             <div key={i} className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
               <p className="text-slate-400 text-xs uppercase tracking-wider mb-1">{m.label}</p>
-              <p className={`text-2xl font-bold text-${m.color}-400`}>{m.val}</p>
+              <p className={text-2xl font-bold ${getColorClass(m.color)}}>{m.val}</p>
             </div>
           ))}
         </div>
@@ -170,24 +168,42 @@ const LiveIntelligenceDashboard = () => {
           <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
             <h4 className="text-slate-400 text-sm font-bold mb-4">Crawl Status</h4>
             <div className="space-y-3 text-sm">
-              <div className="flex justify-between"><span>Total Crawled</span><span>{seoData.metadata.screaming_frog.total_urls_crawled}</span></div>
-              <div className="flex justify-between text-red-400"><span>Crawl Errors</span><span>{seoData.crawl_errors}</span></div>
+              <div className="flex justify-between">
+                <span>Total Crawled</span>
+                <span>{seoData.metadata.screaming_frog.total_urls_crawled}</span>
+              </div>
+              <div className="flex justify-between text-red-400">
+                <span>Crawl Errors</span>
+                <span>{seoData.crawl_errors}</span>
+              </div>
             </div>
           </div>
           
           <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
             <h4 className="text-slate-400 text-sm font-bold mb-4">Content Quality</h4>
             <div className="space-y-3 text-sm">
-              <div className="flex justify-between text-emerald-400"><span>Score</span><span>{seoData.content_density}/100</span></div>
-              <div className="flex justify-between"><span>Word Count</span><span>{seoData.metadata.surfer_seo.word_count}</span></div>
+              <div className="flex justify-between text-emerald-400">
+                <span>Score</span>
+                <span>{seoData.content_density}/100</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Word Count</span>
+                <span>{seoData.metadata.surfer_seo.word_count}</span>
+              </div>
             </div>
           </div>
 
           <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
             <h4 className="text-slate-400 text-sm font-bold mb-4">Performance</h4>
             <div className="space-y-3 text-sm">
-              <div className="flex justify-between text-blue-400"><span>Speed Index</span><span>{seoData.metadata.lighthouse.speed_index}ms</span></div>
-              <div className="flex justify-between"><span>TTI</span><span>{seoData.metadata.lighthouse.time_to_interactive}ms</span></div>
+              <div className="flex justify-between text-blue-400">
+                <span>Speed Index</span>
+                <span>{seoData.metadata.lighthouse.speed_index}ms</span>
+              </div>
+              <div className="flex justify-between">
+                <span>TTI</span>
+                <span>{seoData.metadata.lighthouse.time_to_interactive}ms</span>
+              </div>
             </div>
           </div>
         </div>
