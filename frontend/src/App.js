@@ -77,7 +77,7 @@ function App() {
             <span className="text-[#557C55]">Digital Intelligence</span> &amp; Human Context.
           </h1>
           <p className="text-lg text-slate-600 mb-8 max-w-2xl leading-relaxed">
-            I am a Data & SEO Specialist with a medical background. I build automated SEO pipelines, manage Generative AI integrations, and deliver professional bilingual localization for various sectors.
+            I am a Data { & } SEO Specialist with a medical background. I build automated SEO pipelines, manage Generative AI integrations, and deliver professional bilingual localization for various sectors.
           </p>
         </div>
       </header>
@@ -85,7 +85,7 @@ function App() {
       {/* 3. INTERESTS (Moved here) */}
       <section className="pb-20 px-6 bg-[#FDFCFB]">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Core Interests & Curiosity</h2>
+          <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Core Interests &amp; Curiosity</h2>
           <div className="flex flex-wrap gap-3">
             {interests.map((item, i) => (
               <span key={i} className="px-5 py-2 bg-white border border-[#E2E8F0] rounded-full text-xs font-semibold text-slate-600 shadow-sm hover:border-[#557C55] transition-colors">
@@ -96,7 +96,7 @@ function App() {
         </div>
       </section>
 
-      {/* 4. CORE EXPERTISE & TECH STACK */}
+      {/* 4. CORE EXPERTISE { & } TECH STACK */}
       <section className="py-20 px-6 bg-[#F8FAF8] border-y border-[#E2E8F0]">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-sm font-black text-[#557C55] uppercase tracking-[0.2em] mb-12 text-center">Core Expertise</h2>
@@ -105,7 +105,7 @@ function App() {
               <div className="w-12 h-12 bg-[#F8FAF8] rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#557C55] group-hover:text-white transition-all">
                 <Cpu size={24} />
               </div>
-              <h3 className="font-bold text-[#1E293B] mb-3">AI & ML Engineering</h3>
+              <h3 className="font-bold text-[#1E293B] mb-3">AI &amp; ML Engineering</h3>
               <p className="text-sm text-slate-500 leading-relaxed">Scaling Generative AI models and fixing ML pipelines for automated content management.</p>
             </div>
             <div className="group bg-white p-8 rounded-2xl border border-transparent hover:border-[#F0F4F0] hover:shadow-sm transition-all">
